@@ -4,8 +4,11 @@
 
 import random,os,time
 
-#时间
-t = time.strftime("%m月%d日 %H时%M分%S秒")
+# 获取当前时间
+current_time = time.localtime()
+
+# 转换为指定格式的字符串，包含中文
+t = time.strftime("%m月%d日 %H时%M分%S秒", current_time)
 
 #符号
 key_symbols = {1:['+'], 2:['-'], 3:['x'], 4:['÷'],
@@ -65,7 +68,7 @@ operations = {
     '+': lambda x, y: x + y,
     '-': lambda x, y: x - y,
     'x': lambda x, y: x * y,
-    '÷': lambda x, y: y / x
+    '÷': lambda x, y: x / y
 }
 
 #新建文件夹
@@ -78,18 +81,25 @@ answer_file = folder_name + '/答案.txt'
 
 #输出部分
 def output():
-    with open(question_file, 'a') as qf:
+    with open(question_file, 'a', encoding='utf-8') as qf:
         qf.write(f"{num1} {chosen_symbol} {num2} = \n")
 
-    with open(answer_file, 'a') as af:
+    with open(answer_file, 'a', encoding='utf-8') as af:
         af.write(f"{num1} {chosen_symbol} {num2} = {result}\n")
 
     print(f"{num1} {chosen_symbol} {num2} = ")
     print(f"{num1} {chosen_symbol} {num2} = {result}")
 
+#公因数计算
+def factors(number):
+    factors = []
+    for i in range(1, number + 1):
+        if number % i == 0:
+            factors.append(i)
+    return factors
 
 
-#+,-,*运算
+#运算
 while total >= 0 :
     num1 = random.randint(minnum,maxnum)
     num2 = random.randint(minnum,maxnum)
@@ -105,8 +115,11 @@ while total >= 0 :
     elif chosen_symbol == '÷' and (num1 == 0 or num2 == 0):
         #print ("÷")
         continue
-    else :
+    if chosen_symbol == '÷':
+        num1_factors = factors(num1)
+        num2 = random.choice(num1_factors)
         pass
+
 
     result = operations[chosen_symbol](num1, num2)
     output()

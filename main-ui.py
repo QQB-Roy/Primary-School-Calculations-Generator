@@ -16,15 +16,6 @@ operations = {
     '÷': lambda x, y: x / y
 }
 
-#新建文件夹
-folder_name = './' + t
-if not os.path.exists(folder_name):
-    os.makedirs(folder_name)
-
-question_file = folder_name + '/题目.txt'
-answer_file = folder_name + '/答案.txt'
-
-
 #公因数计算
 def factors(number):
     factors = []
@@ -228,6 +219,16 @@ class Ui_Form(object):
                         pass
 
                 result = operations[chosen_symbol](num1, num2)
+                
+                #新建文件夹
+                if self.pushButton.clicked:
+                    folder_name = './' + t
+                    if not os.path.exists(folder_name):
+                        os.makedirs(folder_name)
+
+                    question_file = folder_name + '/题目.txt'
+                    answer_file = folder_name + '/答案.txt'
+
 
                 #输出部分
                 with open(question_file, 'a', encoding='utf-8') as qf:
